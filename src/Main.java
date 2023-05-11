@@ -8,41 +8,54 @@ import br.com.benezinhobank.pessoa.model.PessoaJuridica;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.MonthDay;
 
 public class Main {
+
+    public static Agencia novaAgencia(String nome, Banco banco){
+        Agencia agencia = new Agencia();
+        agencia.setNome(nome);
+        banco.addAgencia(agencia);
+        return agencia;
+    }
+
+    public static PessoaFisica novaPessoa(String nome, LocalDate nascimento, String CPF, PessoaFisica mae){
+        PessoaFisica pf = new PessoaFisica();
+        pf.setCPF(CPF);
+        pf.setNascimento(nascimento);
+        pf.setNome(nome);
+        pf.setMae(mae);
+        return pf;
+    }
+
+    public static ContaCorrente novaContaCorrente(Agencia agencia, Pessoa titular, double limite){
+        ContaCorrente cc = new ContaCorrente();
+        cc.setAgencia(agencia);
+        cc.setTitular(titular);
+        cc.setLimite(limite);
+        agencia.addConta(cc);
+        return cc;
+    }
+
+    public static ContaPoupanca novaContaPoupanca(Agencia agencia, Pessoa titular, MonthDay dia){
+        ContaPoupanca cp = new ContaPoupanca();
+        cp.setAniversario(dia.getDayOfMonth());
+        cp.setAgencia(agencia);
+        cp.setTitular(titular);
+        agencia.addConta(cp);
+        return cp;
+    }
+
     public static void main(String[] args) {
 
         Banco benezinho = new Banco("Benezinho Bank");
+        Agencia Brasil = novaAgencia("Brasil", benezinho);
+        PessoaFisica mae = novaPessoa("Sisi", LocalDate.of(1975, 6, 26), "12345678939", null);
+        PessoaFisica bene = novaPessoa("Ang", LocalDate.of(2004,1,16), "12345643213", mae);
+        ContaCorrente cc = novaContaCorrente(Brasil, bene, 5_000_000);
+        ContaPoupanca cp = novaContaPoupanca(Brasil, mae, MonthDay.now());
 
-        Agencia osasco = new Agencia();
-        osasco.setBanco(benezinho);
-        osasco.setNome("Osasco");
-        osasco.setNumero("1-9");
 
-        PessoaFisica mae = new PessoaFisica();
-        mae.setNome("Maria Raquel");
-        mae.setNascimento(LocalDate.of(1946, 10, 9));
-        mae.setCPF("213241651-20");
-
-        PessoaFisica bene = new PessoaFisica();
-        bene.setCPF("213246546-50");
-        bene.setNascimento(LocalDate.of(1977, 3, 8));
-        bene.setNome("Benefrancis do Nascimento");
-        bene.setMae(mae);
-
-        ContaCorrente cc = new ContaCorrente();
-        cc.setAgencia(osasco);
-        cc.setTitular(bene);
-        cc.setSaldo(1_000_000.99);
-        cc.setLimite(5_000_000);
-        cc.setNumero("1-9");
-
-        ContaPoupanca cp = new ContaPoupanca();
-        cp.setNumero("2-8");
-        cp.setAniversario(4);
-        cp.setAgencia(osasco);
-        cp.setSaldo(500_000);
-        cp.setTitular(mae);
 
         PessoaJuridica holding = new PessoaJuridica();
         holding.setCNPJ("1231312/0001-09");
@@ -69,7 +82,7 @@ public class Main {
         ccH.setLimite(500);
         ccH.setSaldo(1000);
         ccH.setTitular(holding);
-        ccH.setAgencia(osasco);
+        ccH.setAgencia(Brasil);
 
 //        System.out.println(ccH);
 //

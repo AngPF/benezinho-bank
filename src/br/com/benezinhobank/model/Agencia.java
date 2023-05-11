@@ -1,5 +1,10 @@
 package br.com.benezinhobank.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Vector;
+
 public class Agencia {
 
    private String numero;
@@ -8,6 +13,26 @@ public class Agencia {
 
    private Banco banco;
 
+   private Collection<Conta> contas = new Vector<>();
+
+   public Agencia addConta(Conta conta){
+       this.contas.add(conta);
+       conta.setAgencia(this);
+       var numeroConta = this.contas.size() + 1;
+       var digito = new Random().nextInt(9);
+       conta.setNumero(numeroConta + "-" + digito);
+       return this;
+   }
+
+   public Agencia removeConta(Conta conta){
+       this.contas.remove(conta);
+       conta.setAgencia(null);
+       return this;
+    }
+
+    public Collection<Conta> getContas(){
+       return Collections.unmodifiableCollection(this.contas);
+    }
 
     public Agencia() {
     }
