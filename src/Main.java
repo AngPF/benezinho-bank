@@ -46,31 +46,35 @@ public class Main {
         return cp;
     }
 
+    public static PessoaJuridica novaPessoaJuridica(String nome, LocalDate nascimento, String CNPJ, String RazaoSocial){
+        PessoaJuridica holding = new PessoaJuridica();
+        holding.setCNPJ(CNPJ);
+        holding.setNascimento(nascimento);
+        holding.setNome(nome);
+        holding.setRazaoSocial(RazaoSocial);
+        return holding;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
 
         Banco benezinho = new Banco("Benezinho Bank");
         Agencia Brasil = novaAgencia("Brasil", benezinho);
         PessoaFisica mae = novaPessoa("Sisi", LocalDate.of(1975, 6, 26), "12345678939", null);
-        PessoaFisica bene = novaPessoa("Ang", LocalDate.of(2004,1,16), "12345643213", mae);
-        ContaCorrente cc = novaContaCorrente(Brasil, bene, 5_000_000);
+        PessoaFisica pf = novaPessoa("Ang", LocalDate.of(2004,1,16), "12345643213", mae);
+        ContaCorrente cc = novaContaCorrente(Brasil, "Ang", 5_000_000);
         ContaPoupanca cp = novaContaPoupanca(Brasil, mae, MonthDay.now());
+        PessoaJuridica holding = novaPessoaJuridica("Ang Holding", LocalDate.of(1988,10,5),"1233112/0001-09","Ang Holding");
+        PessoaFisica lucca = novaPessoa("Lucca Freitas", LocalDate.of(2004,8,19), "123321234", mae);
 
 
-
-        PessoaJuridica holding = new PessoaJuridica();
-        holding.setCNPJ("1231312/0001-09");
-        holding.setNascimento(LocalDate.of(1988, 10, 5));
-        holding.setNome("Benezinho Holding");
-        holding.setRazaoSocial("Benezinho Holding SA");
-
-        PessoaFisica lucca = new PessoaFisica();
-        lucca.setCPF("132132132132");
-        lucca.setNascimento(LocalDate.of(2004, 8, 19));
-        lucca.setNome("Lucca Freitas");
-        lucca.setMae(mae);
 
         Pessoa[] socios = new Pessoa[3];
-        socios[0] = bene;
+        socios[0] = ang;
         socios[1] = mae;
         socios[2] = lucca;
 
